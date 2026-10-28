@@ -1,6 +1,6 @@
 # ⚡ CommitLint.ai
 
-[![CI Pipeline](https://github.com/07Durgesh/commitlint-ai/actions/workflows/ci.yml/badge.svg)](https://github.com/07Durgesh/commitlint-ai/actions/workflows/ci.yml)
+[![CI Pipeline](https://github.com/07Durgesh/Commitlint-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/07Durgesh/Commitlint-AI/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-yellow.svg)](https://conventionalcommits.org)
