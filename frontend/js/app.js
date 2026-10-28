@@ -1,7 +1,9 @@
-const DEFAULT_PROD_API = 'https://commitlint-ai-backend.onrender.com';
-const API_BASE = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
+// Automatically resolve API base URL:
+// - Standalone local file (file://) or dev servers -> use http://localhost:8080
+// - Production (Vercel) -> use relative path '' (same-origin, zero CORS issues!)
+const API_BASE = (window.location.protocol === 'file:' || window.location.port === '3000' || window.location.port === '5500')
   ? 'http://localhost:8080'
-  : (localStorage.getItem('COMMITLINT_API_URL') || DEFAULT_PROD_API);
+  : '';
 
 const SAMPLE_DIFF = `diff --git a/backend/internal/middleware/ratelimit.go b/backend/internal/middleware/ratelimit.go
 new file mode 100644

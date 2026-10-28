@@ -1,18 +1,17 @@
 {
   "version": 2,
-  "public": true,
-  "cleanUrls": true,
-  "builds": [
+  "rewrites": [
     {
-      "src": "frontend/**",
-      "use": "@vercel/static"
-    }
-  ],
-  "routes": [
+      "source": "/api/health",
+      "destination": "/api/health/index.go"
+    },
     {
-      "src": "/(.*)",
-      "dest": "/frontend/$1"
+      "source": "/api/analyze",
+      "destination": "/api/analyze/index.go"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/frontend/$1"
     }
   ]
 }
-
