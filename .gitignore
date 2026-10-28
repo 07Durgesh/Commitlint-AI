@@ -1,7 +1,30 @@
+# Environment & secrets
 .env
-*.exe
-*.log
+*.env.local
+
+# Personal learning notes & documentation
+docs/
+
+# Local tooling & IDEs
+.postman/
+postman/
+.vscode/
+.idea/
+
+# Binaries & build outputs
 bin/
-backend/commitlint-AI
+*.exe
+server.exe
+commitlint-cli.exe
+dist/
+
+# Test coverage & logs
+*.log
+coverage.out
+coverage.html
+
+# System files
 .DS_Store
+Thumbs.db
 node_modules/
+backend/commitlint-AI
