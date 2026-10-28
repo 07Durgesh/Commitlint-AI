@@ -1,0 +1,8 @@
+.git
+.env
+*.exe
+*.log
+out.log
+err.log
+server.exe
+

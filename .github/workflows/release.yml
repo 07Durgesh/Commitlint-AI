@@ -1,0 +1,52 @@
+name: Release & Multi-Platform Binaries
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    name: Build Multi-Platform CLI
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+
+      - name: Compile Multi-Platform Binaries
+        env:
+          VERSION: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+        run: |
+          mkdir -p dist
+          LDFLAGS="-s -w -X main.Version=${VERSION} -X main.Commit=${COMMIT} -X main.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          
+          # Linux amd64 & arm64
+          GOOS=linux GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-amd64 backend/cmd/cli/main.go
+          GOOS=linux GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-arm64 backend/cmd/cli/main.go
+          
+          # macOS Intel & Apple Silicon
+          GOOS=darwin GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-amd64 backend/cmd/cli/main.go
+          GOOS=darwin GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-arm64 backend/cmd/cli/main.go
+          
+          # Windows amd64
+          GOOS=windows GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-windows-amd64.exe backend/cmd/cli/main.go
+
+          # Generate checksums for release integrity
+          cd dist
+          sha256sum * > checksums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*
+          generate_release_notes: true
+

@@ -1,0 +1,45 @@
+name: Continuous Integration
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+jobs:
+  test-and-verify:
+    name: Build & Test
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+          check-latest: true
+          cache: true
+          cache-dependency-path: backend/go.sum
+
+      - name: Verify Dependencies
+        run: go mod verify
+
+      - name: Run Go Vet (Static Analysis)
+        run: go vet ./...
+
+      - name: Run Unit Tests with Coverage
+        run: go test -v -coverprofile=coverage.out ./...
+
+      - name: Build Server Binary
+        run: |
+          go build -ldflags "-X main.Version=${{ github.ref_name }} -X main.Commit=${{ github.sha }}" -o bin/server cmd/server/main.go
+
+      - name: Build CLI Binary
+        run: |
+          go build -ldflags "-X main.Version=${{ github.ref_name }} -X main.Commit=${{ github.sha }}" -o bin/commitlint-cli cmd/cli/main.go
+

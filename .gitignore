@@ -1,0 +1,7 @@
+.env
+*.exe
+*.log
+bin/
+backend/commitlint-AI
+.DS_Store
+node_modules/

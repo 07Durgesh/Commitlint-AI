@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: commitlint-ai-backend
+    env: go
+    rootDir: backend
+    plan: free
+    buildCommand: go build -ldflags "-s -w -X main.Version=$RENDER_GIT_COMMIT" -o bin/server cmd/server/main.go
+    startCommand: ./bin/server
+    healthCheckPath: /api/health
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: GEMINI_MODEL
+        value: gemini-3.5-flash-lite
+      - key: GEMINI_API_KEY
+        sync: false # Set securely in Render dashboard
+
