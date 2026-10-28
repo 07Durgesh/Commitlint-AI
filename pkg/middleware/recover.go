@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"runtime/debug"
 
-	"github.com/07Durgesh/commitlint-AI/internal/model"
+	"github.com/07Durgesh/commitlint-AI/pkg/model"
 )
 
 // Recoverer catches any unexpected panics in downstream handlers,

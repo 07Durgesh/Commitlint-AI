@@ -30,15 +30,15 @@ jobs:
           LDFLAGS="-s -w -X main.Version=${VERSION} -X main.Commit=${COMMIT} -X main.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)"
           
           # Linux amd64 & arm64
-          GOOS=linux GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-amd64 backend/cmd/cli/main.go
-          GOOS=linux GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-arm64 backend/cmd/cli/main.go
+          GOOS=linux GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-amd64 cmd/cli/main.go
+          GOOS=linux GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-linux-arm64 cmd/cli/main.go
           
           # macOS Intel & Apple Silicon
-          GOOS=darwin GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-amd64 backend/cmd/cli/main.go
-          GOOS=darwin GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-arm64 backend/cmd/cli/main.go
+          GOOS=darwin GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-amd64 cmd/cli/main.go
+          GOOS=darwin GOARCH=arm64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-darwin-arm64 cmd/cli/main.go
           
           # Windows amd64
-          GOOS=windows GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-windows-amd64.exe backend/cmd/cli/main.go
+          GOOS=windows GOARCH=amd64 go build -ldflags "$LDFLAGS" -o dist/commitlint-cli-windows-amd64.exe cmd/cli/main.go
 
           # Generate checksums for release integrity
           cd dist

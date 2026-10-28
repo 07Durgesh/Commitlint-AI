@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/07Durgesh/commitlint-AI/internal/handler"
-	"github.com/07Durgesh/commitlint-AI/internal/middleware"
-	"github.com/07Durgesh/commitlint-AI/internal/service"
+	"github.com/07Durgesh/commitlint-AI/pkg/handler"
+	"github.com/07Durgesh/commitlint-AI/pkg/middleware"
+	"github.com/07Durgesh/commitlint-AI/pkg/service"
 )
 
 var analyzeHandler http.Handler
@@ -24,3 +24,4 @@ func init() {
 func Handler(w http.ResponseWriter, r *http.Request) {
 	analyzeHandler.ServeHTTP(w, r)
 }
+

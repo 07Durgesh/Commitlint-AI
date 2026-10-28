@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/07Durgesh/commitlint-AI/internal/handler"
-	"github.com/07Durgesh/commitlint-AI/internal/middleware"
+	"github.com/07Durgesh/commitlint-AI/pkg/handler"
+	"github.com/07Durgesh/commitlint-AI/pkg/middleware"
 )
 
 var healthHandler http.Handler
@@ -18,3 +18,4 @@ func init() {
 func Handler(w http.ResponseWriter, r *http.Request) {
 	healthHandler.ServeHTTP(w, r)
 }
+

@@ -8,8 +8,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/07Durgesh/commitlint-AI/internal/model"
-	"github.com/07Durgesh/commitlint-AI/internal/service"
+	"github.com/07Durgesh/commitlint-AI/pkg/model"
+	"github.com/07Durgesh/commitlint-AI/pkg/service"
 )
 
 func TestAnalyzeHandler_MethodNotAllowed(t *testing.T) {

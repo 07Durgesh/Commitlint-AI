@@ -12,9 +12,9 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/07Durgesh/commitlint-AI/internal/handler"
-	"github.com/07Durgesh/commitlint-AI/internal/middleware"
-	"github.com/07Durgesh/commitlint-AI/internal/service"
+	"github.com/07Durgesh/commitlint-AI/pkg/handler"
+	"github.com/07Durgesh/commitlint-AI/pkg/middleware"
+	"github.com/07Durgesh/commitlint-AI/pkg/service"
 )
 
 // Build metadata injected at compile time via -ldflags:

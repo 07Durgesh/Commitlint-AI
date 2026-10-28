@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/07Durgesh/commitlint-AI/internal/model"
+	"github.com/07Durgesh/commitlint-AI/pkg/model"
 )
 
 // writeJSON is a reusable helper function that serializes data into JSON,

@@ -8,7 +8,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/07Durgesh/commitlint-AI/internal/model"
+	"github.com/07Durgesh/commitlint-AI/pkg/model"
 )
 
 type visitor struct {

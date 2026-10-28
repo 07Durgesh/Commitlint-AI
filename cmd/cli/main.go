@@ -8,7 +8,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/07Durgesh/commitlint-AI/internal/service"
+	"github.com/07Durgesh/commitlint-AI/pkg/service"
 )
 
 // Build metadata injected at compile time via -ldflags
