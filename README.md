@@ -1,12 +1,14 @@
 # ⚡ CommitLint.ai
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-commitlint--ai.vercel.app-2ea043?style=flat&logo=vercel)](https://commitlint-ai.vercel.app)
 [![CI Pipeline](https://github.com/07Durgesh/Commitlint-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/07Durgesh/Commitlint-AI/actions/workflows/ci.yml)
 [![Go Version](https://img.shields.io/badge/Go-1.22+-00ADD8?style=flat&logo=go)](https://go.dev)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Built with Gemini](https://img.shields.io/badge/AI-Gemini%20Flash-orange.svg)](https://ai.google.dev)
 
 > **"Never write a lazy commit message again."**  
-> An automated Git intelligence tool that turns raw `git diff` outputs into clean Conventional Commits, structured PR descriptions, and actionable code review observations using Go and Gemini AI.
+> An automated Git intelligence tool that turns raw `git diff` outputs into clean Conventional Commits, structured PR descriptions, and actionable code review observations using Go and Gemini AI.  
+> 🔗 **Live App:** [https://commitlint-ai.vercel.app](https://commitlint-ai.vercel.app)
 
 ---
 
