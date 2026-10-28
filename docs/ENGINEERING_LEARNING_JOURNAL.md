@@ -16,7 +16,7 @@
 9. [Step 7: CLI Tool & Architecture Decoupling (`cmd/cli/main.go`)](#9-step-7-cli-tool--architecture-decoupling-cmdclimainego)
 10. [Step 8: Automated CI/CD Pipeline (GitHub Actions)](#10-step-8-automated-cicd-pipeline-github-actions)
 11. [Step 9: Multi-Platform Release Distribution Workflow](#11-step-9-multi-platform-release-distribution-workflow)
-12. [Step 10: Infrastructure-as-Code (Render & Vercel)](#12-step-10-infrastructure-as-code-render--vercel)
+12. [Step 10: Open-Source Community Standards & Repo Hygiene](#12-step-10-open-source-community-standards--repo-hygiene)
 13. [Step 11: Production Change & Version Management](#13-step-11-production-change--version-management)
 14. [Comprehensive Trade-offs Matrix](#14-comprehensive-trade-offs-matrix)
 
@@ -88,6 +88,7 @@ flowchart TD
 | **Phase 3.2** | Continuous Integration (CI) | `.github/workflows/ci.yml` | ✅ Completed | Automated testing, `go vet`, coverage profiles, build verification |
 | **Phase 3.3** | Release Distribution (CD) | `.github/workflows/release.yml` | ✅ Completed | Cross-compilation for 5 OS/architectures, checksums, GitHub Releases |
 | **Phase 3.4** | Cloud Infrastructure (IaC) | `render.yaml`, `vercel.json` | ✅ Completed | Infrastructure-as-code, health probes, environment separation |
+| **Phase 3.5** | GitHub Production Release | Tag `v1.0.0` pushed | ✅ Live on GitHub | Branch `main`, release workflows triggered, community hygiene files |
 
 ---
 
@@ -140,9 +141,6 @@ Incoming Request → [CORS] → [Logger] → [Recoverer] → [RateLimiter] → [
 ---
 
 ## 7. Step 5: Dynamic Versioning via Linker Flags (`-ldflags`)
-
-### The Problem
-Hardcoding version numbers in source code requires manual edits on every release, and does not record the exact Git commit SHA or build timestamp.
 
 ### The Solution: Go Linker String Replacement
 Go's linker allows setting the value of package-level string variables at build time using `-X`:
@@ -217,12 +215,15 @@ Decoupling business logic into `internal/service/gemini.go` enables both the HTT
 
 ---
 
-## 12. Step 10: Infrastructure-as-Code (Render & Vercel)
+## 12. Step 10: Open-Source Community Standards & Repo Hygiene
 
-1. **Render Backend (`render.yaml`):**
-   Defines a managed Go web service building `cmd/server/main.go`, with health check polling on `/api/health`.
-2. **Vercel Frontend (`vercel.json`):**
-   Configures static CDN hosting for `frontend/` with edge caching and clean URL rewrites.
+To ensure the repository reflects top-tier production quality for reviewers and open-source contributors:
+1. **`LICENSE`:** Standard MIT open-source license.
+2. **`CONTRIBUTING.md`:** Comprehensive contributor guidelines with setup, testing instructions, and Conventional Commit rules.
+3. **`CODE_OF_CONDUCT.md`:** Contributor Covenant standard.
+4. **`PULL_REQUEST_TEMPLATE.md`:** Standardized PR description format with testing checklists.
+5. **Issue Templates:** Structured bug report and feature request templates in `.github/ISSUE_TEMPLATE/`.
+6. **Badges:** Added dynamic GitHub Actions CI build status, Go version, and MIT license badges to `README.md`.
 
 ---
 
