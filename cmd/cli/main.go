@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/07Durgesh/commitlint-AI/pkg/hook"
 	"github.com/07Durgesh/commitlint-AI/pkg/service"
 )
 
@@ -44,18 +45,88 @@ func loadEnv(filepath string) {
 	}
 }
 
+func printUsage() {
+	fmt.Println("⚡ CommitLint.ai — AI-Powered Git Commit & PR Generator")
+	fmt.Println("\nUSAGE:")
+	fmt.Println("  commitlint [command] [options]")
+	fmt.Println("\nCOMMANDS:")
+	fmt.Println("  install-hook      Install automatic 'prepare-commit-msg' git hook into current repo")
+	fmt.Println("  uninstall-hook    Remove the CommitLint git hook from current repo")
+	fmt.Println("  hook <file>       Internal command invoked automatically by git during 'git commit'")
+	fmt.Println("\nFLAGS:")
+	fmt.Println("  -diff string      Git diff text to analyze directly")
+	fmt.Println("  -context string   Optional extra context about the changes")
+	fmt.Println("  -style string     Commit style: conventional (default), angular, simple")
+	fmt.Println("  -file string      Path to a diff or patch file")
+	fmt.Println("  -commit-only      Print only the generated commit subject")
+	fmt.Println("  -version          Print CLI version and build metadata")
+	fmt.Println("\nEXAMPLES:")
+	fmt.Println("  git diff | commitlint")
+	fmt.Println("  commitlint -diff \"$(git diff)\"")
+	fmt.Println("  commitlint install-hook")
+}
+
 func main() {
 	loadEnv(".env")
 	loadEnv("../../.env")
 	loadEnv("../.env")
 
-	// CLI Flags
+	// 1. Handle Subcommands
+	if len(os.Args) > 1 {
+		switch os.Args[1] {
+		case "install-hook":
+			if err := hook.InstallHook(); err != nil {
+				fmt.Fprintf(os.Stderr, "Error installing git hook: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Println("✅ CommitLint git hook installed into .git/hooks/prepare-commit-msg")
+			fmt.Println("⚡ From now on, simply run 'git commit' and your commit message will be pre-filled automatically!")
+			return
+
+		case "uninstall-hook":
+			if err := hook.UninstallHook(); err != nil {
+				fmt.Fprintf(os.Stderr, "Error uninstalling git hook: %v\n", err)
+				os.Exit(1)
+			}
+			fmt.Println("✅ CommitLint git hook uninstalled successfully.")
+			return
+
+		case "hook":
+			if len(os.Args) < 3 {
+				fmt.Fprintln(os.Stderr, "Error: 'hook' command requires commit message file path.")
+				os.Exit(1)
+			}
+			commitMsgFile := os.Args[2]
+			source := ""
+			if len(os.Args) > 3 {
+				source = os.Args[3]
+			}
+
+			apiKey := os.Getenv("GEMINI_API_KEY")
+			if apiKey == "" {
+				fmt.Fprintln(os.Stderr, "⚠️ CommitLint: GEMINI_API_KEY not set. Skipping automatic commit generation.")
+				return
+			}
+			svc := service.NewGeminiService(apiKey)
+			if err := hook.RunHook(commitMsgFile, source, svc); err != nil {
+				fmt.Fprintf(os.Stderr, "Hook error: %v\n", err)
+			}
+			return
+
+		case "-h", "--help", "help":
+			printUsage()
+			return
+		}
+	}
+
+	// 2. Standard Flag Parsing
 	diffFlag := flag.String("diff", "", "Git diff text directly (alternative to piping or -file)")
 	styleFlag := flag.String("style", "conventional", "Commit style: conventional, angular, simple")
 	contextFlag := flag.String("context", "", "Optional extra context about the change")
 	fileFlag := flag.String("file", "", "Path to diff or patch file")
 	onlyCommitFlag := flag.Bool("commit-only", false, "Print only the generated commit subject")
 	versionFlag := flag.Bool("version", false, "Print CLI version and build metadata")
+	flag.Usage = printUsage
 	flag.Parse()
 
 	if *versionFlag {
@@ -71,11 +142,10 @@ func main() {
 
 	var diffText string
 
-	// 1. Check if -diff was provided directly
+	// Check if -diff was provided directly
 	if *diffFlag != "" {
 		diffText = *diffFlag
 	} else if *fileFlag != "" {
-		// 2. Check if a file was provided via -file
 		content, err := os.ReadFile(*fileFlag)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error reading file %s: %v\n", *fileFlag, err)
@@ -83,7 +153,7 @@ func main() {
 		}
 		diffText = string(content)
 	} else {
-		// 3. Check if data is being piped via stdin
+		// Check stdin
 		stat, _ := os.Stdin.Stat()
 		if (stat.Mode() & os.ModeCharDevice) == 0 {
 			bytes, err := io.ReadAll(os.Stdin)
@@ -97,9 +167,7 @@ func main() {
 
 	diffText = strings.TrimSpace(diffText)
 	if diffText == "" {
-		fmt.Fprintln(os.Stderr, "Error: No diff provided. Use -diff, -file, or pipe via stdin.")
-		fmt.Fprintln(os.Stderr, "Example: commitlint-ai -diff \"$(git diff)\"")
-		flag.Usage()
+		printUsage()
 		os.Exit(1)
 	}
 
